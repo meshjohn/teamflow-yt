@@ -1,3 +1,5 @@
+"use client";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,18 +11,20 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { orpc } from "@/lib/orpc";
+import { getAvatar } from "@/lib/query/get-avatar";
 import {
   LogoutLink,
   PortalLink,
 } from "@kinde-oss/kinde-auth-nextjs/components";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { CreditCard, LogOut, User } from "lucide-react";
 
-const user = {
-  picture: "https://github.com/shadcn.png",
-  given_name: "John Nagy",
-};
-
 export function UserNav() {
+  const {
+    data: { user },
+  } = useSuspenseQuery(orpc.workspace.list.queryOptions());
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -31,12 +35,12 @@ export function UserNav() {
         >
           <Avatar>
             <AvatarImage
-              src={user.picture}
+              src={getAvatar(user.picture, user.email!)}
               alt="User Image"
               className="object-cover"
             />
             <AvatarFallback>
-              {user.given_name.slice(0, 2).toUpperCase()}
+              {user.given_name?.slice(0, 1).toUpperCase()}
             </AvatarFallback>
           </Avatar>
         </Button>
@@ -50,12 +54,12 @@ export function UserNav() {
         <DropdownMenuLabel className="font-normal flex items-center gap-2 px-1 py-1.5 text-left text-sm">
           <Avatar className="relative size-8 rounded-lg">
             <AvatarImage
-              src={user.picture}
+              src={user.picture!}
               alt="User Image"
               className="object-cover"
             />
             <AvatarFallback>
-              {user.given_name.slice(0, 2).toUpperCase()}
+              {user.given_name?.slice(0, 1).toUpperCase()}
             </AvatarFallback>
           </Avatar>
           <div className="grid flex-1 text-left text-sm leading-tight">
