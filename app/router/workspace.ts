@@ -1,12 +1,13 @@
 import { KindeOrganization, KindeUser } from "@kinde-oss/kinde-auth-nextjs";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { os } from "@orpc/server";
 import z from "zod";
 import { base } from "../middlewares/base";
 import { requiredAuthMiddleware } from "../middlewares/auth";
 import { requiredWorkspaceMiddleware } from "../middlewares/workspace";
 import { workspaceSchema } from "../schemas/workspace";
 import { init, Organizations } from "@kinde/management-api-js";
+import { standardSecuritymiddleware } from "../middlewares/arcjet/standard";
+import { heavyWriteSecurityMiddleware } from "../middlewares/arcjet/heavy-write";
 
 export const listWorkspace = base
   .use(requiredAuthMiddleware)
@@ -37,6 +38,7 @@ export const listWorkspace = base
     if (!organizations) {
       throw errors.FORBIDDEN();
     }
+
     return {
       workspaces: organizations.orgs.map((org) => ({
         id: org.code,
@@ -50,6 +52,9 @@ export const listWorkspace = base
 
 export const createWorkspace = base
   .use(requiredAuthMiddleware)
+  .use(requiredWorkspaceMiddleware)
+  .use(standardSecuritymiddleware)
+  .use(heavyWriteSecurityMiddleware)
   .route({
     method: "POST",
     path: "/workspace",
