@@ -15,13 +15,29 @@ datasource db {
 }
 
 model Channel {
-  id String @id @default(uuid())
-  name String
+  id        String   @id @default(uuid())
+  name      String
   createdAt DateTime @updatedAt
-  
+
   // foreign key (kinde ids)
   workspaceId String
   createdById String
 
+  message Message[]
+
   @@unique([workspaceId, name])
+}
+
+model Message {
+  id           String   @id @default(uuid())
+  content      String
+  imageUrl     String?
+  createdAt    DateTime @default(now())
+  updateAt     DateTime @updatedAt
+  authorId     String
+  authorEmail  String
+  authorName   String
+  authorAvatar String
+  Channel      Channel? @relation(fields: [channelId], references: [id])
+  channelId    String
 }
