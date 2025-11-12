@@ -164,7 +164,7 @@ export function MessageList() {
 
     if (!el) return;
 
-    bottomRef.current?.scrollIntoView({ block: "center" });
+    bottomRef.current?.scrollIntoView({ block: "end", behavior: "smooth" });
 
     setIsAtBottom(true);
   };
