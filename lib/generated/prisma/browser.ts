@@ -26,3 +26,8 @@ export type Channel = Prisma.ChannelModel
  * 
  */
 export type Message = Prisma.MessageModel
+/**
+ * Model MessageReaction
+ * 
+ */
+export type MessageReaction = Prisma.MessageReactionModel

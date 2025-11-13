@@ -9,4 +9,5 @@
  */
 export type * from './models/Channel'
 export type * from './models/Message'
+export type * from './models/MessageReaction'
 export type * from './commonInputTypes'
