@@ -49,7 +49,8 @@ export const AnyNull = runtime.objectEnumValues.instances.AnyNull
 
 export const ModelName = {
   Channel: 'Channel',
-  Message: 'Message'
+  Message: 'Message',
+  MessageReaction: 'MessageReaction'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -94,6 +95,21 @@ export const MessageScalarFieldEnum = {
 } as const
 
 export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
+
+
+export const MessageReactionScalarFieldEnum = {
+  id: 'id',
+  emoji: 'emoji',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId',
+  userEmail: 'userEmail',
+  userName: 'userName',
+  userAvatar: 'userAvatar',
+  messageId: 'messageId'
+} as const
+
+export type MessageReactionScalarFieldEnum = (typeof MessageReactionScalarFieldEnum)[keyof typeof MessageReactionScalarFieldEnum]
 
 
 export const SortOrder = {

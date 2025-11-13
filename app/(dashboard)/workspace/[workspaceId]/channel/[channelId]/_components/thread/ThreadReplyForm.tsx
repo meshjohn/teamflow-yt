@@ -63,7 +63,7 @@ export function ThreadReplyForm({ threadId, user }: ThreadReplyFormProps) {
         });
         await queryClient.cancelQueries({ queryKey: listOptions.queryKey });
         const previous = queryClient.getQueryData(listOptions.queryKey);
-        const optimistic: Message = {
+        const optimistic: MessageListItem = {
           id: `optimistic-${crypto.randomUUID()}`,
           content: data.content,
           createdAt: new Date(),
@@ -75,7 +75,10 @@ export function ThreadReplyForm({ threadId, user }: ThreadReplyFormProps) {
           channelId: data.channelId,
           threadId: data.threadId!,
           imageUrl: data.imageUrl!,
+          reactions: [],
+          replyCount: 0,
         };
+
         queryClient.setQueryData(listOptions.queryKey, (old) => {
           if (!old) {
             return old;
@@ -95,9 +98,7 @@ export function ThreadReplyForm({ threadId, user }: ThreadReplyFormProps) {
             const pages = old.pages.map((page) => ({
               ...page,
               items: page.items.map((m) =>
-                m.id === threadId
-                  ? { ...m, repliesCount: m.repliesCount + 1 }
-                  : m
+                m.id === threadId ? { ...m, repliesCount: m.replyCount + 1 } : m
               ),
             }));
             return { ...old, pages };
